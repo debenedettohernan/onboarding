@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class Account {
     @Id
     @Column(name = "numcue", nullable = false)
-    private String accountNumber;
+    private Integer accountNumber;
 
     @Column(name = "persnum", nullable = false)
     private Integer personNumber;

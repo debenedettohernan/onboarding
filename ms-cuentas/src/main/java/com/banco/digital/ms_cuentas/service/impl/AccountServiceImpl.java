@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account generateAccount(Integer persNum, CurrencyCode currencyCode, AccountStatus accountStatus, BigDecimal salary) {
-        String accountNumber = generateAccountNumber();
+        Integer accountNumber = Integer.valueOf(generateAccountNumber());
 
         Account account = Account.builder()
                 .accountNumber(accountNumber)

@@ -23,7 +23,6 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
     private final AccountService accountService;
     private final CurrencyCodeService currencyCodeService;
     private final AccountStatusService accountStatusService;
-    private final ExternalValidationService externalValidationService;
     private final ProductService productService;
 
     private final KafkaService kafkaService;
@@ -31,13 +30,11 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
     @Autowired
     public AccountProcessorServiceImpl(AccountService accountService, CurrencyCodeService currencyCodeService,
                                        AccountStatusService accountStatusService,
-                                       ExternalValidationService externalValidationService,
                                        ProductService productService,
                                        KafkaService kafkaService) {
         this.accountService = accountService;
         this.currencyCodeService = currencyCodeService;
         this.accountStatusService = accountStatusService;
-        this.externalValidationService = externalValidationService;
         this.productService = productService;
         this.kafkaService = kafkaService;
     }
@@ -49,13 +46,9 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
         Integer persNum = userAccountRequest.getPersNum();
         BigDecimal salary = userAccountRequest.getSalary();
 
-        logger.info("Validación externa de dni {} ...", dni);
-        ExternalValidationResult externalValidationResult = externalValidationService.getValidationResults(dni);
 
         logger.info("Validando tipo producto...");
 
-        Product product = productService.generateProduct(externalValidationResult, salary);
-        logger.info("Validando tipo producto {}", product.toString());
 
         CurrencyCode currencyCode = currencyCodeService.findBySymbol("USD");
         AccountStatus accountStatus = accountStatusService.findByDetail("Activa");
