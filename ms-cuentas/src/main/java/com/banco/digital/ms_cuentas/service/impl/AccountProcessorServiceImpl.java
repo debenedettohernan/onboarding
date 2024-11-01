@@ -63,7 +63,7 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
 
     private void sendCreateUserEvent(Account account) throws JsonProcessingException {
         UserCardRequest userCardRequest = UserCardRequest.builder()
-                .accountNumber(account.getAccountNumber()).build();
+                .accountNumber(String.valueOf(account.getAccountNumber())).build();
         kafkaService.sendEvent(userCardRequest);
     }
 }
