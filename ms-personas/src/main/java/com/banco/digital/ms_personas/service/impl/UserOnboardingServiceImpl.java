@@ -65,7 +65,7 @@ public class UserOnboardingServiceImpl implements UserOnboardingService {
                 return new RegisterUserResponse("Error creating user or address.", HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
 
-            logger.info("Usuario creado exitosamente!");
+            logger.info("Usuario creado...");
             sendCreateUserEvent(user, userRegisterRequest);
 
             return new RegisterUserResponse("User registered successfully!", HttpStatus.CREATED.value());

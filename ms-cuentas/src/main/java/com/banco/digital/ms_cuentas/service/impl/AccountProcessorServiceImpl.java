@@ -41,19 +41,21 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
 
     @Override
     public RegisterAccountResponse processAccountCreation(UserAccountRequest userAccountRequest) throws URISyntaxException, IOException, InterruptedException {
-        logger.info("Generando nueva cuenta, aguarde un momento...");
+        logger.info("Generar cuentas...");
         String dni = userAccountRequest.getDni();
         Integer persNum = userAccountRequest.getPersNum();
         BigDecimal salary = userAccountRequest.getSalary();
 
-        logger.info("Validando el producto...");
+
+        logger.info("Validando tipo producto...");
+
 
         CurrencyCode currencyCode = currencyCodeService.findBySymbol("USD");
         AccountStatus accountStatus = accountStatusService.findByDetail("Activa");
 
         Account account = accountService.generateAccount(persNum, currencyCode, accountStatus, salary);
 
-        logger.info("Cuenta creada exitosamente!");
+        logger.info("Cuenta creada...");
         sendCreateUserEvent(account);
 
         return new RegisterAccountResponse("Account registered successfully!", HttpStatus.CREATED.value());
@@ -61,7 +63,7 @@ public class AccountProcessorServiceImpl implements AccountProcessorService {
 
     private void sendCreateUserEvent(Account account) throws JsonProcessingException {
         UserCardRequest userCardRequest = UserCardRequest.builder()
-                .accountNumber(String.valueOf(account.getAccountNumber())).build();
+                .accountNumber(account.getAccountNumber()).build();
         kafkaService.sendEvent(userCardRequest);
     }
 }
